@@ -1,0 +1,41 @@
+# Zależności
+node_modules/
+
+# Build
+dist/
+build/
+out/
+
+# Logi
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Środowisko
+.env
+.env.local
+.env.*.local
+
+# Testy / coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Systemowe
+.DS_Store
+Thumbs.db
+
+# Tymczasowe
+*.tmp
+*.bak
+.cache/

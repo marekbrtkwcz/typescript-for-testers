@@ -14,7 +14,8 @@
     "format": "biome format --write .",
     "check": "biome check --write .",
     "update:deps": "ncu -u && npm install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "type": "module",
@@ -26,6 +27,7 @@
     "npm-check-updates": "^23.1.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
+    "vitest": "^5.1.0",
     "zod": "^4.6.7"
   },
   "allowScripts": {

@@ -45,11 +45,43 @@ npm run menu
 └── package.json
 ```
 
+## Moduły
+
+### Math
+
+Moduł `src/math.ts` zawiera podstawowe operacje matematyczne:
+
+| Funkcja | Opis | Przykład |
+|---|---|---|
+| `add(a, b)` | Dodawanie | `add(2, 3) // 5` |
+| `subtract(a, b)` | Odejmowanie | `subtract(5, 3) // 2` |
+| `multiply(a, b)` | Mnożenie | `multiply(4, 5) // 20` |
+| `divide(a, b)` | Dzielenie | `divide(10, 2) // 5` |
+| `power(a, b)` | Potęgowanie | `power(2, 3) // 8` |
+| `modulo(a, b)` | Reszta z dzielenia | `modulo(10, 3) // 1` |
+
+> ⚠️ `divide()` i `modulo()` rzucają błąd `Error` przy dzieleniu przez zero.
+
+## Testy
+
+Projekt używa **Vitest** do testowania.
+
+Uruchomienie testów:
+
+```bash
+npm test
+```
+
+Testy obejmują:
+- Testy pozytywne dla wszystkich operacji
+- Testy negatywne (NaN, Infinity, edge cases)
+
 ## Narzędzia
 
 - **TypeScript 7.0.2** — język, strict mode, nowoczesne opcje tsconfig
 - **tsx** — uruchamianie TS bez kompilacji
 - **Biome** — linter + formatter (zastępuje ESLint + Prettier)
+- **Vitest** — framework testowy
 - **@clack/prompts** — interaktywne menu w terminalu
 - **zod** — walidacja schematów
 - **@faker-js/faker** — generowanie danych testowych

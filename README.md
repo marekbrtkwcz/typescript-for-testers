@@ -24,7 +24,7 @@ npm run menu
 | Skrypt | Opis |
 |---|---|
 | `npm run build` | Kompilacja TypeScript do `dist/` (z type-checking) |
-| `npm run start` | Kompilacja + uruchomienie `dist/example.js` |
+| `npm run start` | Kompilacja + uruchomienie `dist/src/module-01/example.js` |
 | `npm run dev` | Uruchomienie TS bezpośrednio przez tsx |
 | `npm run watch` | Kompilacja w trybie watch |
 | `npm run lint` | Lintowanie (Biome) |
@@ -38,7 +38,8 @@ npm run menu
 ```
 ├── scripts/
 │   └── menu.ts        # interaktywne menu skryptów (@clack/prompts)
-├── src/               # kod źródłowy
+├── src/
+│   └── module-01/     # moduły: math, pesel, example
 ├── dist/              # skompilowany kod (gitignored)
 ├── biome.json         # konfiguracja lintera/formattera
 ├── tsconfig.json      # konfiguracja TypeScript 7 (strict, ESM NodeNext)
@@ -49,7 +50,7 @@ npm run menu
 
 ### Math
 
-Moduł `src/math.ts` zawiera podstawowe operacje matematyczne:
+Moduł `src/module-01/math.ts` zawiera podstawowe operacje matematyczne:
 
 | Funkcja | Opis | Przykład |
 |---|---|---|
@@ -61,6 +62,19 @@ Moduł `src/math.ts` zawiera podstawowe operacje matematyczne:
 | `modulo(a, b)` | Reszta z dzielenia | `modulo(10, 3) // 1` |
 
 > ⚠️ `divide()` i `modulo()` rzucają błąd `Error` przy dzieleniu przez zero.
+
+### PESEL
+
+Moduł `src/module-01/pesel.ts` — walidacja, odczyt danych i generowanie numerów PESEL:
+
+| Funkcja | Opis | Przykład |
+|---|---|---|
+| `validatePESEL(pesel)` | Walidacja formatu i sumy kontrolnej | `validatePESEL('44051401359') // true` |
+| `getPESELInfo(pesel)` | Data urodzenia i płeć z numeru | `getPESELInfo('44051401359') // { birthDate: '1944-05-14', gender: 'male', ... }` |
+| `generatePESEL(options)` | Generowanie z pełnych lub częściowych danych | `generatePESEL({ year: 1990, month: 5, day: 15, gender: 'female' })` |
+| `generatePESELForDate(date, gender?)` | Generowanie z obiektu `Date` | `generatePESELForDate(new Date(1978, 0, 20), 'female')` |
+
+Wszystkie pola `options` w `generatePESEL` są opcjonalne (`year`, `month`, `day`, `gender`) — brakujące wartości są losowane spójnie (np. 29 lutego bez podanego roku wybiera rok przestępny), a niemożliwe daty rzucają błąd.
 
 ## Testy
 

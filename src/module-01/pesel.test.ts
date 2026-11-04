@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { generatePESEL, generatePESELForDate, getPESELInfo, validatePESEL } from './pesel.js';
+import { calculateCheckDigit, generatePESEL, generatePESELForDate, getPESELInfo, validatePESEL } from './pesel.js';
 
 describe('PESEL validation', () => {
   describe('positive tests', () => {
@@ -291,5 +291,35 @@ describe('PESEL generation', () => {
     it('throws for invalid Date in generatePESELForDate', () => {
       expect(() => generatePESELForDate(new Date('not a date'))).toThrow('Invalid date');
     });
+  });
+});
+
+describe('calculateCheckDigit', () => {
+  it('calculates check digit 9 for 4405140135', () => {
+    expect(calculateCheckDigit('4405140135')).toBe(9);
+  });
+
+  it('calculates check digit 2 for 0224020235', () => {
+    expect(calculateCheckDigit('0224020235')).toBe(2);
+  });
+
+  it('calculates check digit 5 for 0021010003', () => {
+    expect(calculateCheckDigit('0021010003')).toBe(5);
+  });
+
+  it('returns 0 when the weighted sum is a multiple of 10', () => {
+    expect(calculateCheckDigit('0000000000')).toBe(0);
+  });
+
+  it('always returns an integer between 0 and 9 and produces a PESEL accepted by validatePESEL', () => {
+    for (let i = 0; i < 50; i++) {
+      const first10 = Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
+      if (first10 === '0000000000') continue;
+      const check = calculateCheckDigit(first10);
+      expect(Number.isInteger(check)).toBe(true);
+      expect(check).toBeGreaterThanOrEqual(0);
+      expect(check).toBeLessThanOrEqual(9);
+      expect(validatePESEL(first10 + String(check))).toBe(true);
+    }
   });
 });

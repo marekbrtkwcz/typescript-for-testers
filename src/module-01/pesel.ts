@@ -104,7 +104,7 @@ function range(from: number, to: number): number[] {
   return result;
 }
 
-function calculateCheckDigit(first10: string): number {
+export function calculateCheckDigit(first10: string): number {
   let sum = 0;
   for (const [i, char] of first10.split('').entries()) {
     sum += Number(char) * (PESSEL_WEIGHTS[i] ?? 1);

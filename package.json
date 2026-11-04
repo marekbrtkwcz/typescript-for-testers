@@ -2,10 +2,10 @@
   "name": "typescript-for-testers",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/example.js",
+  "main": "dist/src/example.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/example.js",
+    "start": "tsc && node dist/src/example.js",
     "dev": "tsx src/example.ts",
     "menu": "tsx scripts/menu.ts",
     "watch": "tsc --watch",
@@ -32,5 +32,8 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "dependencies": {
+    "consola": "^3.4.2"
   }
 }

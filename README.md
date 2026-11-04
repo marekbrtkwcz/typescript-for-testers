@@ -23,8 +23,8 @@ npm run menu
 
 | Skrypt | Opis |
 |---|---|
-| `npm run build` | Kompilacja TypeScript do `dist/` (z type-checking) |
-| `npm run start` | Kompilacja + uruchomienie `dist/src/module-01/example.js` |
+| `npm run build` | Type-check: `tsc --noEmit` (bez emitu JS) |
+| `npm run start` | Uruchomienie `src/module-01/example.ts` przez tsx |
 | `npm run dev` | Uruchomienie TS bezpośrednio przez tsx |
 | `npm run watch` | Kompilacja w trybie watch |
 | `npm run lint` | Lintowanie (Biome) |
@@ -43,7 +43,6 @@ npm run menu
 │   └── menu.ts        # interaktywne menu skryptów (@clack/prompts)
 ├── src/
 │   └── module-01/     # moduły: math, pesel, example
-├── dist/              # skompilowany kod (gitignored)
 ├── biome.json         # konfiguracja lintera/formattera
 ├── tsconfig.json      # konfiguracja TypeScript 7 (strict, ESM NodeNext)
 └── package.json

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getPESELInfo, validatePESEL } from './pesel.js';
+import { generatePESEL, generatePESELForDate, getPESELInfo, validatePESEL } from './pesel.js';
 
 describe('PESEL validation', () => {
   describe('positive tests', () => {
@@ -155,6 +155,129 @@ describe('PESEL info extraction', () => {
 
     it('returns null for non-string input', () => {
       expect(getPESELInfo(12345678901 as unknown as string)).toBeNull();
+    });
+  });
+});
+
+describe('PESEL generation', () => {
+  describe('positive tests', () => {
+    it('generates a valid 11-digit PESEL for full date and gender', () => {
+      const pesel = generatePESEL({ year: 1990, month: 5, day: 15, gender: 'male' });
+      expect(pesel).toHaveLength(11);
+      expect(validatePESEL(pesel)).toBe(true);
+    });
+
+    it('round-trips birth date and gender through getPESELInfo', () => {
+      const pesel = generatePESEL({ year: 1990, month: 5, day: 15, gender: 'female' });
+      const info = getPESELInfo(pesel);
+      expect(info?.birthDate).toBe('1990-05-15');
+      expect(info?.gender).toBe('female');
+    });
+
+    it('encodes male as odd 10th digit and female as even', () => {
+      const male = generatePESEL({ year: 2000, month: 1, day: 1, gender: 'male' });
+      const female = generatePESEL({ year: 2000, month: 1, day: 1, gender: 'female' });
+      expect(Number(male[9]) % 2).toBe(1);
+      expect(Number(female[9]) % 2).toBe(0);
+    });
+
+    it('supports year only', () => {
+      for (let i = 0; i < 50; i++) {
+        const info = getPESELInfo(generatePESEL({ year: 1985 }));
+        expect(info?.birthDate?.startsWith('1985-')).toBe(true);
+      }
+    });
+
+    it('supports month only', () => {
+      for (let i = 0; i < 50; i++) {
+        const info = getPESELInfo(generatePESEL({ month: 7 }));
+        expect(Number(info?.birthDate?.split('-')[1])).toBe(7);
+      }
+    });
+
+    it('supports day only', () => {
+      for (let i = 0; i < 50; i++) {
+        const info = getPESELInfo(generatePESEL({ day: 31 }));
+        expect(Number(info?.birthDate?.split('-')[2])).toBe(31);
+      }
+    });
+
+    it('supports gender only', () => {
+      for (let i = 0; i < 50; i++) {
+        const info = getPESELInfo(generatePESEL({ gender: 'female' }));
+        expect(info?.gender).toBe('female');
+      }
+    });
+
+    it('generates a valid PESEL with no options at all', () => {
+      for (let i = 0; i < 50; i++) {
+        expect(validatePESEL(generatePESEL())).toBe(true);
+      }
+    });
+
+    it('supports partial year and month', () => {
+      const info = getPESELInfo(generatePESEL({ year: 2001, month: 12 }));
+      expect(info?.birthDate?.startsWith('2001-12-')).toBe(true);
+    });
+
+    it('supports Feb 29 when year is not given (picks a leap year)', () => {
+      for (let i = 0; i < 50; i++) {
+        const info = getPESELInfo(generatePESEL({ month: 2, day: 29 }));
+        expect(info?.birthDate?.endsWith('-02-29')).toBe(true);
+      }
+    });
+
+    it('handles leap day in a leap year', () => {
+      const info = getPESELInfo(generatePESEL({ year: 2000, month: 2, day: 29 }));
+      expect(info?.birthDate).toBe('2000-02-29');
+    });
+
+    it('encodes 2000s with month offset +20', () => {
+      const pesel = generatePESEL({ year: 2005, month: 3, day: 3 });
+      expect(pesel.substring(2, 4)).toBe('23');
+      expect(getPESELInfo(pesel)?.birthDate).toBe('2005-03-03');
+    });
+
+    it('encodes 1800s with month offset +80', () => {
+      const pesel = generatePESEL({ year: 1899, month: 8, day: 8 });
+      expect(pesel.substring(2, 4)).toBe('88');
+      expect(getPESELInfo(pesel)?.birthDate).toBe('1899-08-08');
+    });
+
+    it('generatePESELForDate uses the Date parts', () => {
+      const info = getPESELInfo(generatePESELForDate(new Date(1985, 11, 25), 'male'));
+      expect(info?.birthDate).toBe('1985-12-25');
+      expect(info?.gender).toBe('male');
+    });
+  });
+
+  describe('negative tests', () => {
+    it('throws for invalid month', () => {
+      expect(() => generatePESEL({ month: 13 })).toThrow('Invalid month');
+    });
+
+    it('throws for invalid day', () => {
+      expect(() => generatePESEL({ day: 0 })).toThrow('Invalid day');
+    });
+
+    it('throws for out-of-range year', () => {
+      expect(() => generatePESEL({ year: 1700 })).toThrow('Invalid year');
+    });
+
+    it('throws for invalid gender', () => {
+      expect(() => generatePESEL({ gender: 'other' as unknown as 'male' })).toThrow('Invalid gender');
+    });
+
+    it('throws for non-existing date like Feb 30', () => {
+      expect(() => generatePESEL({ month: 2, day: 30 })).toThrow('Invalid date');
+    });
+
+    it('throws for Feb 29 in a non-leap year', () => {
+      expect(() => generatePESEL({ year: 2023, month: 2, day: 29 })).toThrow('Invalid date');
+    });
+
+    it('throws for invalid Date in generatePESELForDate', () => {
+      expect(() => generatePESELForDate(new Date('not a date'))).toThrow('Invalid date');
     });
   });
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { validatePESEL, getPESELInfo } from './pesel.js';
+import { getPESELInfo, validatePESEL } from './pesel.js';
 
 describe('PESEL validation', () => {
   describe('positive tests', () => {

@@ -4,7 +4,7 @@ export function validatePESEL(pesel: string): boolean {
   if (!pesel || typeof pesel !== 'string') return false;
 
   const cleaned = pesel.trim();
-  
+
   if (!/^\d{11}$/.test(cleaned)) return false;
 
   if (cleaned === '00000000000') return false;

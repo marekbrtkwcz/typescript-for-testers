@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { add, subtract, multiply, divide, power, modulo } from './math.js';
+import { add, divide, modulo, multiply, power, subtract } from './math.js';
 
 describe('kalkulator', () => {
   it('dodaje dwie liczby', () => {
@@ -32,7 +32,7 @@ describe('kalkulator', () => {
   });
 
   it('rzuca błąd przy dzieleniu przez zero', () => {
-    expect(() => divide(10, 0)).toThrow("Division by zero");
+    expect(() => divide(10, 0)).toThrow('Division by zero');
   });
 
   it('potęguje liczby', () => {
@@ -48,7 +48,7 @@ describe('kalkulator', () => {
   });
 
   it('rzuca błąd przy modulo przez zero', () => {
-    expect(() => modulo(10, 0)).toThrow("Modulo by zero");
+    expect(() => modulo(10, 0)).toThrow('Modulo by zero');
   });
 
   it('potęguje z ujemnym wykładnikiem', () => {

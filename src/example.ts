@@ -1,6 +1,6 @@
 import { consola } from 'consola';
 
-import { add, subtract, multiply, divide, power, modulo } from './math.js';
+import { add, divide, modulo, multiply, power, subtract } from './math.js';
 
 consola.info('typescript-for-testers - przykładowe użycie modułu math');
 

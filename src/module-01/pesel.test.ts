@@ -244,6 +244,18 @@ describe('PESEL generation', () => {
       expect(getPESELInfo(pesel)?.birthDate).toBe('1899-08-08');
     });
 
+    it('encodes 2100s with month offset +40', () => {
+      const pesel = generatePESEL({ year: 2150, month: 1, day: 4 });
+      expect(pesel.substring(2, 4)).toBe('41');
+      expect(getPESELInfo(pesel)?.birthDate).toBe('2150-01-04');
+    });
+
+    it('encodes 2200s with month offset +60', () => {
+      const pesel = generatePESEL({ year: 2264, month: 10, day: 2 });
+      expect(pesel.substring(2, 4)).toBe('70');
+      expect(getPESELInfo(pesel)?.birthDate).toBe('2264-10-02');
+    });
+
     it('generatePESELForDate uses the Date parts', () => {
       const info = getPESELInfo(generatePESELForDate(new Date(1985, 11, 25), 'male'));
       expect(info?.birthDate).toBe('1985-12-25');

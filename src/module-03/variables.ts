@@ -38,3 +38,5 @@ function printUserInfo(userNameOrPerson: string | Person, userAge?: number, user
 
 printUserInfo(firstName, age, isAdult);
 printUserInfo(person);
+
+printUserInfo('Olga', 53, 53 > 18);

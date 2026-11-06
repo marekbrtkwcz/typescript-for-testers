@@ -29,6 +29,10 @@ enum HexColor {
   White = '#ffffff',
 }
 
+let myColor = Color.Green;
+myColor = Color.Orange;
+consola.info('🔢 MyColor:', myColor);
+
 const favoriteColor: Color = Color.Green;
 const anotherColor: Color = Color.White;
 

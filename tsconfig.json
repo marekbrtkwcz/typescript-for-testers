@@ -12,7 +12,6 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "verbatimModuleSyntax": true,
-    "erasableSyntaxOnly": true,
     "moduleDetection": "force",
     "esModuleInterop": true,
     "skipLibCheck": true,
